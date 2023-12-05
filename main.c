@@ -24,15 +24,15 @@ typedef struct tabu_list {
 // method of tabu list
 void Enqueue(Tabu_list *L, Solution *t);
 void Dequeue(Tabu_list *L);
-int In_tabu_list(Tabu_list *L, int length, Solution *t);
+int  In_tabu_list(Tabu_list *L, int length, Solution *t);
 
 void initialize(Solution *S, Tabu_list *L);
 void tabu_search(int iterations ,int n, int l, Solution *S, Solution *Best, Tabu_list *L);
 
 // helper function
-unsigned long long  generate_random(int div);
-unsigned long long  B2D (uint64_t value);
-unsigned long long  Quality (Solution *t);
+uint64_t generate_random(int div);
+uint64_t B2D (uint64_t value);
+uint64_t Quality (Solution *t);
 int power(int base, int exponent);
 
 
@@ -145,15 +145,15 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
 
 
 
-unsigned long long generate_random(int div){
-    unsigned long long r = rand() % div;
+uint64_t generate_random(int div){
+    uint64_t r = rand() % div;
     // printf("%llu", r);
     return r;
 }
 // Convert binary to decimal
-long long unsigned int B2D(uint64_t value) {
+uint64_t  B2D(uint64_t value) {
     // Initialize the decimal value
-    long long unsigned int decimal = 0;
+    uint64_t decimal = 0;
     // Initialize the base (power of 2)
     uint64_t base = 1;
     
@@ -226,8 +226,8 @@ int power(int base, int exponent){
 }
 
 // Calculate the quality of the solution
-unsigned long long  Quality (Solution *t){
-    unsigned long long score = 0;
+uint64_t Quality (Solution *t){
+    uint64_t score = 0;
     // n is the biggest bit of one in the solution
     int n = 0;
     // Iterate through each bit position
@@ -240,7 +240,7 @@ unsigned long long  Quality (Solution *t){
         }
     }
     // Valuate the solution
-    score = abs(B2D(t->value) - power(2,n-2));
+    score = llabs(B2D(t->value) - power(2,n-2));
 
     return score;
 }
