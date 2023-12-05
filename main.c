@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#define Bit_length 50
 
 // define a 50 bit solution struct
 typedef struct solution {
@@ -42,7 +43,6 @@ int main(void) {
     srand((unsigned) time(&t));
     
     // define variables
-    int bit_length = 50; // length of the bit string
     int n = 20; // number of tweaks desired to sample the gradient
     int iterations = 1000; // number of iterations
     int l = 10; // tabu_list_length
@@ -94,12 +94,26 @@ void initialize(Solution *S , Tabu_list *L) {
 
 
 void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tabu_list *L){
-    // printf("%d %d %llu %llu\n", n, l, B2D(S->value), B2D(L->value));
     printf("Init Value      : %llu\n", Quality(S));
+
+    Solution *End = NULL;
+    End=(Solution*)malloc(sizeof (Solution));
+    // set every bit to 1
+    int i = 0;
+    for (i = 0; i < 50; ++i) {
+        // Toggle the i-th bit
+        End->value |= (1ULL << i);
+    }
 
     // length of tabu list set to one
     int tabu_length = 1;
     while (iterations--){
+        // check if match the best solution
+        if (Quality(Best) == End->value){
+            printf("Best Value %-4d : %llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
+            printf("-----------------------------END-----------------------------\n");
+            break;
+        }
         // check the tabu list size and update the tabu list
         if (tabu_length>l){
             Dequeue(L);
@@ -130,6 +144,12 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
         if ( !In_tabu_list( L, tabu_length, R) ){
             // S <- R
             Copy(S, R);
+            
+            // check the tabu list size and update the tabu list
+            if (tabu_length==l){
+                Dequeue(L);
+                tabu_length--;
+            }
             // Enqueue R to the tabu list
             Enqueue(L, R);
             tabu_length++;
@@ -139,6 +159,7 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
             Copy(Best, S);
         }
     }
+
 }
 
 
