@@ -15,4 +15,39 @@ gcc ./main.c -o main
 ./main.exe 1000 10 5 > result.txt
 ```
 
+## Structure Description
+### 1. Solution
+#### 1.1 Contains:
+##### i. A single item for 50 bits of uint64_t to solve this 50 bits Deception Problem
+
+#### 1.2 Method:
+##### i. void Set (Solution *t) : Init the value of Solution to 0
+##### ii. void Copy (Solution *t, Solution *object) : Copy the value of object to the value of t
+##### iii. void Tweak (Solution *t) : Tweak the value of t by one bit
+
+### 2. Tabu_list :
+#### 2.1 Contains
+##### i. An integer of its current length
+##### ii. A pointer structure of itself to store the next item.
+##### iii. A Solution Structure to save 50 bits value.
+#### 2.2 Method:
+##### i. void Enqueue(Tabu_list *L, Solution *t) : Enqueue the value of t to the tabu list
+##### ii. void Dequeue(Tabu_list *L) : Dequeue the first item in the tabu list
+##### iii. int In_tabu_list(Tabu_list *L, int length, Solution *t) : Check if the value of t is in the tabu list
+##### iv. void Free_tabu_list(Tabu_list *L) : Free the tabu list
+
+
 ## Function Description
+
+### Main Method
+#### 1. void initialize(Solution *S, Tabu_list *L) : Initialize the solution and tabu list
+##### * Init some variable and Structure. 
+#### 2. void tabu_search(int iterations ,int n, int l, Solution *S, Solution *Best, Tabu_list *L) :
+##### * Tabu search : iterations, n: number of tweaks, l: tabu list length, S: local solution, Best: best solution, L: tabu list
+
+### Helper Method
+#### 1. uint64_t generate_random(int div) : generate random number divided by div
+#### 2. uint64_t B2D (uint64_t value) : Convert binary to decimal
+#### 3. uint64_t Quality (Solution *t) : Calculate the quality of the solution
+#### 4. int power(int base, int exponent) : Calculate the power of base to exponent
+
