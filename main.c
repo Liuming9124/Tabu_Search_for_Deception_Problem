@@ -50,7 +50,6 @@ int main( int argc, char *argv[]) {
     int l = atoi(argv[2]); // tabu_list_length
     int n = atoi(argv[3]); // number of tweaks desired to sample the gradient
 
-
     Solution *S = NULL;
     S=(Solution*)malloc(sizeof (Solution));
 
@@ -70,6 +69,7 @@ int main( int argc, char *argv[]) {
 
     // free allocated memory
     free(S);
+    free(Best);
     Free_tabu_list(L);
 
     return 0;
