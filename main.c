@@ -108,11 +108,16 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
 
     // length of tabu list set to one
     int tabu_length = 1;
-    while (iterations--){
+    while (1){
+        if (iterations==0){
+            break;
+        }
+        iterations--;
+        // Evaluate the Best solution
+        printf("Best Value %-4d : %16llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
+
         // check if match the best solution
         if (Quality(Best) == End->value){
-            printf("Best Value %-4d : %16llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
-            printf("-----------------------------END-----------------------------\n");
             break;
         }
         // check the tabu list size and update the tabu list
@@ -120,9 +125,6 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
             Dequeue(&L);
             tabu_length--;
         }
-        
-        // Evaluate the Best solution
-        printf("Best Value %-4d : %16llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
 
         Solution *R = NULL;
         R = (Solution*)malloc(sizeof (Solution));
@@ -160,6 +162,8 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
             Copy(Best, S);
         }
     }
+    printf("-----------------------------END-----------------------------\n");
+    printf("Iterations : %-4d\nBest value : %16llu\n", 1000-iterations, Quality(Best) );
 
 }
 
