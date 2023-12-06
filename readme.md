@@ -27,12 +27,11 @@ gcc ./main.c -o main
 
 ### 2. Tabu_list :
 #### 2.1 Contains
-* An integer of its current length
 * A pointer structure of itself to store the next item.
 * A Solution Structure to save 50 bits value.
 #### 2.2 Method:
 * void Enqueue(Tabu_list *L, Solution *t) : Enqueue the value of t to the tabu list
-* void Dequeue(Tabu_list *L) : Dequeue the first item in the tabu list
+* void Dequeue(Tabu_list **L) : Dequeue the first item in the tabu list
 * int In_tabu_list(Tabu_list *L, int length, Solution *t) : Check if the value of t is in the tabu list
 * void Free_tabu_list(Tabu_list *L) : Free the tabu list
 

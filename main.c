@@ -17,14 +17,13 @@ void Tweak (Solution *t); // Tweak the value of t by one bit
 
 // define a tabu list struct
 typedef struct tabu_list {
-    int current_length;
     uint64_t value : 50;
     struct tabu_list *next;
 } Tabu_list;
 
 // method of tabu list
 void Enqueue(Tabu_list *L, Solution *t);    // Enqueue the value of t to the tabu list
-void Dequeue(Tabu_list *L); // Dequeue the first item in the tabu list
+void Dequeue(Tabu_list **L); // Dequeue the first item in the tabu list
 int  In_tabu_list(Tabu_list *L, int length, Solution *t); // Check if the value of t is in the tabu list
 void Free_tabu_list(Tabu_list *L); // Free the tabu list
 
@@ -91,13 +90,12 @@ void initialize(Solution *S , Tabu_list *L) {
     // Initial Tabu_list
     L->next = NULL;
     L->value = S->value;
-    L->current_length = 1;
 
 }
 
 
 void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tabu_list *L){
-    printf("Init Value      : %llu\n", Quality(S));
+    printf("Init Value      : %16llu\n", Quality(S));
 
     Solution *End = NULL;
     End=(Solution*)malloc(sizeof (Solution));
@@ -113,18 +111,18 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
     while (iterations--){
         // check if match the best solution
         if (Quality(Best) == End->value){
-            printf("Best Value %-4d : %llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
+            printf("Best Value %-4d : %16llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
             printf("-----------------------------END-----------------------------\n");
             break;
         }
         // check the tabu list size and update the tabu list
         if (tabu_length>l){
-            Dequeue(L);
+            Dequeue(&L);
             tabu_length--;
         }
         
         // Evaluate the Best solution
-        printf("Best Value %-4d : %llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
+        printf("Best Value %-4d : %16llu , Tabu list size: %d\n", 1000-iterations, Quality(Best),tabu_length );
 
         Solution *R = NULL;
         R = (Solution*)malloc(sizeof (Solution));
@@ -150,7 +148,7 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
             
             // check the tabu list size and update the tabu list
             if (tabu_length==l){
-                Dequeue(L);
+                Dequeue(&L);
                 tabu_length--;
             }
             // Enqueue R to the tabu list
@@ -223,11 +221,12 @@ void Enqueue(Tabu_list *L, Solution *t){
     temp->next->next = NULL;
 }
 // Dequeue the first item in the tabu list
-void Dequeue(Tabu_list *L){
-    Tabu_list *temp = L;
-    L = L->next;
+void Dequeue(Tabu_list **L){
+    Tabu_list *temp = *L;
+    *L = (*L)->next;
     free(temp);
 }
+
 // Check if the value of t is in the tabu list
 int In_tabu_list(Tabu_list *L, int length, Solution *t){
     Tabu_list *temp = L;
@@ -272,8 +271,10 @@ uint64_t Quality (Solution *t){
             n=i;
         }
     }
-    // Valuate the solution
-    score = llabs(B2D(t->value) - power(2,n-2));
+    if (n>2){
+        // Valuate the solution
+        score = llabs(B2D(t->value) - power(2,n-2));
+    }
 
     return score;
 }
