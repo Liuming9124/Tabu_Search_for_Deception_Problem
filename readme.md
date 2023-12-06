@@ -9,5 +9,10 @@ gcc ./main.c -o main
 ```
 ./main.exe [iterations] [tabu list length] [number of tweaks] > [output file name]
 ```
+### 3.Example
+```
+gcc ./main.c -o main
+./main.exe 1000 10 5 > result.txt
+```
 
 ## Function Description

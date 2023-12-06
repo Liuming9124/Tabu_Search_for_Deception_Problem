@@ -26,6 +26,7 @@ typedef struct tabu_list {
 void Enqueue(Tabu_list *L, Solution *t);    // Enqueue the value of t to the tabu list
 void Dequeue(Tabu_list *L); // Dequeue the first item in the tabu list
 int  In_tabu_list(Tabu_list *L, int length, Solution *t); // Check if the value of t is in the tabu list
+void Free_tabu_list(Tabu_list *L); // Free the tabu list
 
 // main method of tabu search
 void initialize(Solution *S, Tabu_list *L); // initialize the solution and tabu list
@@ -69,7 +70,7 @@ int main( int argc, char *argv[]) {
 
     // free allocated memory
     free(S);
-    free(L);
+    Free_tabu_list(L);
 
     return 0;
 }
@@ -237,6 +238,15 @@ int In_tabu_list(Tabu_list *L, int length, Solution *t){
         temp = temp->next;
     }
     return 0;
+}
+// Free the tabu list
+void Free_tabu_list(Tabu_list *L){
+    Tabu_list *temp = L;
+    while (temp->next != NULL){
+        temp = temp->next;
+        free(L);
+        L = temp;
+    }
 }
 
 int power(int base, int exponent){
