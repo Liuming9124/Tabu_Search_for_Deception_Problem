@@ -163,7 +163,11 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
         }
     }
     printf("-----------------------------END-----------------------------\n");
+    printf("Bit length : %d\n", Bit_length);
     printf("Iterations : %-4d\nBest value : %16llu\n", 1000-iterations, Quality(Best) );
+    printf("Number of Tweaks : %d\n", n);
+    printf("Max Tabu list length : %d\n", l);
+    printf("-------------------------------------------------------------\n");
 
 }
 
