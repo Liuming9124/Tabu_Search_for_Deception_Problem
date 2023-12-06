@@ -11,9 +11,9 @@ typedef struct solution {
 } Solution;
 
 // method of solution
-void Set (Solution *t);
-void Copy (Solution *t, Solution *object);
-void Tweak (Solution *t);
+void Set (Solution *t); // Init the value of solution
+void Copy (Solution *t, Solution *object); // Copy the value of object to the value of t
+void Tweak (Solution *t); // Tweak the value of t by one bit
 
 // define a tabu list struct
 typedef struct tabu_list {
@@ -23,29 +23,31 @@ typedef struct tabu_list {
 } Tabu_list;
 
 // method of tabu list
-void Enqueue(Tabu_list *L, Solution *t);
-void Dequeue(Tabu_list *L);
-int  In_tabu_list(Tabu_list *L, int length, Solution *t);
+void Enqueue(Tabu_list *L, Solution *t);    // Enqueue the value of t to the tabu list
+void Dequeue(Tabu_list *L); // Dequeue the first item in the tabu list
+int  In_tabu_list(Tabu_list *L, int length, Solution *t); // Check if the value of t is in the tabu list
 
-void initialize(Solution *S, Tabu_list *L);
-void tabu_search(int iterations ,int n, int l, Solution *S, Solution *Best, Tabu_list *L);
+// main method of tabu search
+void initialize(Solution *S, Tabu_list *L); // initialize the solution and tabu list
+void tabu_search(int iterations ,int n, int l, Solution *S, Solution *Best, Tabu_list *L); // tabu search
 
 // helper function
-uint64_t generate_random(int div);
-uint64_t B2D (uint64_t value);
-uint64_t Quality (Solution *t);
-int power(int base, int exponent);
+uint64_t generate_random(int div); // generate random number divided by div
+uint64_t B2D (uint64_t value); // Convert binary to decimal
+uint64_t Quality (Solution *t); // Calculate the quality of the solution
+int power(int base, int exponent); // Calculate the power of base to exponent
 
 
-int main(void) {
+// main function: tabu search, put iterations, tabu list length, number of tweaks.
+int main( int argc, char *argv[]) {
     // initialize random seed
     time_t t;
     srand((unsigned) time(&t));
     
     // define variables
-    int n = 20; // number of tweaks desired to sample the gradient
-    int iterations = 1000; // number of iterations
-    int l = 10; // tabu_list_length
+    int iterations = atoi(argv[1]); // number of iterations
+    int l = atoi(argv[2]); // tabu_list_length
+    int n = atoi(argv[3]); // number of tweaks desired to sample the gradient
 
 
     Solution *S = NULL;
