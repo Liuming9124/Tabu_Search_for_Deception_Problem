@@ -6,6 +6,10 @@ cd /path/to/this/directory
 gcc ./main.c -o main
 ```
 ### 2. Run
+* iterations : integer
+* tabu list length : integer
+* number of tweaks : integer , must less than 64
+* output file name
 ```
 ./main.exe [iterations] [tabu list length] [number of tweaks] > [output file name]
 ```

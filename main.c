@@ -7,7 +7,7 @@
 
 // define a 50 bit solution struct
 typedef struct solution {
-    uint64_t value : 50;
+    uint64_t value : Bit_length;
 } Solution;
 
 // method of solution
@@ -17,7 +17,7 @@ void Tweak (Solution *t); // Tweak the value of t by one bit
 
 // define a tabu list struct
 typedef struct tabu_list {
-    uint64_t value : 50;
+    uint64_t value : Bit_length;
     struct tabu_list *next;
 } Tabu_list;
 
@@ -82,7 +82,7 @@ void initialize(Solution *S , Tabu_list *L) {
 
     // Initial every bit in S
     int i=0;
-    for (i = 0; i < 50; ++i) {
+    for (i = 0; i < Bit_length; ++i) {
         // Toggle the i-th bit
         S->value |= (generate_random(2) << i);
     }
@@ -101,7 +101,7 @@ void tabu_search(int iterations ,int n, int l, Solution *S , Solution *Best, Tab
     End=(Solution*)malloc(sizeof (Solution));
     // set every bit to 1
     int i = 0;
-    for (i = 0; i < 50; ++i) {
+    for (i = 0; i < Bit_length; ++i) {
         // Toggle the i-th bit
         End->value |= (1ULL << i);
     }
@@ -185,7 +185,7 @@ uint64_t  B2D(uint64_t value) {
     
     // Iterate through each bit position
     int i=0;
-    for (i = 0; i < 50; ++i) {
+    for (i = 0; i < Bit_length; ++i) {
         // Check if the i-th bit is set (1)
         if (value & (1ULL << i)) {
             // Add the corresponding power of 2 to the decimal value
@@ -211,7 +211,7 @@ void Copy (Solution *t, Solution *object){
 // Tweak the value of t by one bit
 void Tweak (Solution *t){
     // toggle the p-th bit
-    t->value ^= (1ULL << rand() % 50);
+    t->value ^= (1ULL << rand() % Bit_length);
 }
 
 // Enqueue the value of t to the tabu list
@@ -268,7 +268,7 @@ uint64_t Quality (Solution *t){
     int n = 0;
     // Iterate through each bit position
     int i=0;
-    for (i = 0; i < 50; ++i) {
+    for (i = 0; i < Bit_length; ++i) {
         // Check if the i-th bit is set (1)
         if (t->value & (1ULL << i)) {
             // Find the largest bit of one
