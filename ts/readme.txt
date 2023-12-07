@@ -34,10 +34,10 @@ gcc ./main.c -o main
 - Times
 4.2 Result
 - Best Times : The less Iterations to Find the Best Value
-- **Best Compare of Tweaks** : The less Tweaks to Find the Best Value
+- **Best Compare of Tweaks** : The less Tweaks to Find the Best Value -> Best times * Number of Tweaks
 - Best Value: show the best Value of Deception problem
 - Average times : Average Iterations to find the best value
-- Average Compare of Tweaks : Average times * Number of Tweaks
+- Average Compare of Tweaks : Average times / Number of Tweaks
 
 ## Structure and Method Description
 
