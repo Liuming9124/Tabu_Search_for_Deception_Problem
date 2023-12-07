@@ -64,23 +64,22 @@ int main(int argc, char *argv[])
             bestValue = best;
         }
         totalTimes += i;
-        printf("-----------------------------END-----------------------------\n");
+        printf("-----------------------------END : %-4d-----------------------------\n", i);
         printf("Best %-16llu in %d \n", best, i);
-        printf("Number of Tweaks : %d\n", n);
-        printf("Max Tabu list length : %d\n", l);
-        printf("-------------------------------------------------------------\n");
+        printf("--------------------------------------------------------------------\n");
     }
-    printf("-----------------------------Finally Best-----------------------------\n");
+    printf("-------------------------------Show Input-------------------------------\n");
     printf("Max Tabu list length      : %d\n", l);
     printf("Number of Tweaks          : %d\n", n);
     printf("Iterations                : %d\n", iterations);
     printf("Times                     : %d\n", times);
+    printf("-------------------------------Show Result-------------------------------\n");
     printf("Best times                : %d\n", bestTimes);
     printf("Best compare of Tweaks    : %d\n", bestTimes*n);
     printf("Best value                : %llu\n", bestValue);
     printf("Average Iterations        : %lu\n", totalTimes/times);
     printf("Average compare of Tweaks : %lu\n", totalTimes*n/times);
-    printf("----------------------------------------------------------------------\n");
+    printf("----------------------------------END------------------------------------\n");
 
     return 0;
 }
