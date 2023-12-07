@@ -17,16 +17,17 @@ void init_tabu_list(Tabu_list *_list)
     _list->value = 0;
 }
 
+// Queue structure of tabu list
 typedef struct queue
 {
-    int _size;
-    int _limit;
+    int _size; // queue current size
+    int _limit; // queue max limit
     Tabu_list *_head;
     Tabu_list *_tail;
 } Queue;
 void init_queue(Queue *_queue, const int _limit, const uint64_t *value)
 {
-    Tabu_list *temp = (Tabu_list *)malloc(sizeof(Tabu_list));
+    Tabu_list *temp = (Tabu_list *)malloc(sizeof(Tabu_list)); // instantiation
     init_tabu_list(temp);
     temp->value = *value;
     _queue->_size = 0;
@@ -34,6 +35,7 @@ void init_queue(Queue *_queue, const int _limit, const uint64_t *value)
     _queue->_head = temp;
     _queue->_tail = temp;
 }
+// pop the oldest item in queue
 void pop(Queue *_queue)
 {
     if (_queue->_size > 0)
@@ -44,6 +46,7 @@ void pop(Queue *_queue)
         free(temp);
     }
 }
+// push value in the newest place of queue
 void push(Queue *_queue, const uint64_t *value)
 {
     Tabu_list *temp = (Tabu_list *)malloc(sizeof(Tabu_list));
@@ -55,6 +58,7 @@ void push(Queue *_queue, const uint64_t *value)
     _queue->_tail->next = temp;
     _queue->_tail = temp;
 }
+// check whether value in queue or not, return 1:True, 0:False
 short has_item(Queue *_queue, uint64_t _value)
 {
     Tabu_list *temp = _queue->_head;
@@ -66,12 +70,13 @@ short has_item(Queue *_queue, uint64_t _value)
     }
     return 0;
 }
+// free all queue
 void free_queue(Queue *_queue)
 {
     while (_queue->_size > 0)
         pop(_queue);
 }
-
+// count power of 2 by shift left
 uint64_t power_2(int exp)
 {
     uint64_t result = (uint64_t)1 << (uint64_t)exp;
