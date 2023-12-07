@@ -16,44 +16,66 @@ int main(int argc, char *argv[])
     int iterations = atoi(argv[1]); // iterations
     int l = atoi(argv[2]); // limit of tabu list size
     int n = atoi(argv[3]); // size of tweak group
-    // init
-    time_t t;
-    srand((unsigned)time(&t));
-    best = 0;
-    memset(&end, 0, sizeof(end));
-    for (int i = 0; i < BIT_LENGTH - 1; i++) // set the end status to BIT_LENGTH times of 1
-    {
-        end++;
-        end <<= (uint64_t)1;
-    }
-    end++;
-
-    // initialize the first value
-    uint64_t init;
-    for (int i = 0; i < BIT_LENGTH; i++)
-    {
-        init += rand() % 2;
-        init << (uint64_t)1;
-    }
-    // initialize queue , put init in queue
-    init_queue(&queue, l, &init);
-    best = Quality(&queue._head->value);
-    int i;
-    // Start iterations for tabu search
-    for (i = 0; i < iterations; i++)
-    {
-        tabu_search(n);
-        printf("Best %-16llu in %d \n", best, i);
-        if (best == end)
-            break;
-    }
-    free_queue(&queue);
+    int times = atoi(argv[4]); // times of run
     
-    printf("-----------------------------END-----------------------------\n");
-    printf("Best %-16llu in %d \n", best, i);
-    printf("Number of Tweaks : %d\n", n);
-    printf("Max Tabu list length : %d\n", l);
-    printf("-------------------------------------------------------------\n");
+    // bestTimes is the less times of iterations to find the best value
+    int bestTimes = iterations;
+    int totalTimes = 0;
+    uint64_t bestValue = 0;
+    
+    int count;
+    for (count=0; count<times; count++){
+        // init
+        time_t t;
+        srand((unsigned)time(&t));
+        best = 0;
+        memset(&end, 0, sizeof(end));
+        for (int i = 0; i < BIT_LENGTH - 1; i++) // set the end status to BIT_LENGTH times of 1
+        {
+            end++;
+            end <<= (uint64_t)1;
+        }
+        end++;
+
+        // initialize the first value
+        uint64_t init;
+        for (int i = 0; i < BIT_LENGTH; i++)
+        {
+            init += rand() % 2;
+            init << (uint64_t)1;
+        }
+        // initialize queue , put init in queue
+        init_queue(&queue, l, &init);
+        best = Quality(&queue._head->value);
+        int i;
+        // Start iterations for tabu search
+        for (i = 0; i < iterations; i++)
+        {
+            tabu_search(n);
+            printf("Best %-16llu in %d \n", best, i);
+            if (best == end)
+                break;
+        }
+        free_queue(&queue);
+        
+        // show result
+        if (i < bestTimes){
+            bestTimes = i;
+            bestValue = best;
+        }
+        totalTimes += i;
+        printf("-----------------------------END-----------------------------\n");
+        printf("Best %-16llu in %d \n", best, i);
+        printf("Number of Tweaks : %d\n", n);
+        printf("Max Tabu list length : %d\n", l);
+        printf("-------------------------------------------------------------\n");
+    }
+    printf("-----------------------------Finally Best-----------------------------\n");
+    printf("Best times : %d\n", bestTimes);
+    printf("Best value : %llu\n", bestValue);
+    printf("Average times : %lu\n", totalTimes/times);
+    printf("Average compare of Tweaks : %lu\n", totalTimes*n/times);
+    printf("----------------------------------------------------------------------\n");
 
     return 0;
 }
