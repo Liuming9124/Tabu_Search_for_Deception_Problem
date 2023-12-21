@@ -1,4 +1,4 @@
-﻿# Tabu Search for Deception Problem
+# Tabu Search for Deception Problem
 ## How to Use
 ### 1. Compile
 ```
@@ -6,55 +6,64 @@ cd /path/to/this/directory
 gcc ./main.c -o main
 ```
 ### 2. Run
-* iterations : integer
-* tabu list length : integer
-* number of tweaks : integer , must less than 64
-* output file name
+* **iterations** : integer
+* **tabu list length** : integer
+* **number of tweaks** : integer , must less than 50
+* **test times** : how many times you need to try and get the best data back
+* **output file name**
 ```
-./main.exe [iterations] [tabu list length] [number of tweaks] > [output file name]
+./main.exe [iterations] [tabu list length] [number of tweaks] [test times] > [output file name]
 ```
 ### 3.Example
 ```
 gcc ./main.c -o main
-./main.exe 1000 10 5 > result.txt
+./main.exe 1000 10 12 10000 > result.txt
 ```
 
-## Structure Description
-### 1. Solution
-#### 1.1 Contains:
-* A single item for 50 bits of uint64_t to solve this 50 bits Deception Problem
-
-#### 1.2 Method:
-* void Set (Solution *t) : Init the value of Solution to 0
-* void Copy (Solution *t, Solution *object) : Copy the value of object to the value of t
-* void Tweak (Solution *t) : Tweak the value of t by one bit
-
-### 2. Tabu_list :
-#### 2.1 Contains
-* A pointer structure of itself to store the next item.
-* A Solution Structure to save 50 bits value.
-#### 2.2 Method:
-* void Enqueue(Tabu_list *L, Solution *t) : Enqueue the value of t to the tabu list
-* void Dequeue(Tabu_list **L) : Dequeue the first item in the tabu list
-* int In_tabu_list(Tabu_list *L, int length, Solution *t) : Check if the value of t is in the tabu list
-* void Free_tabu_list(Tabu_list *L) : Free the tabu list
+### 4. Show Result
+1. #### Input Value
+* Max Tabu list length
+* Number of Tweaks
+* Iterations
+* Times
+2. #### Result
+* Best Times : The less Iterations to Find the Best Value
+* **Best Compare of Tweaks** : The less Tweaks to Find the Best Value -> Best times * Number of Tweaks
+* Best Value: show the best Value of Deception problem
+* Average times : Average Iterations to find the best value
+* Average Compare of Tweaks : Average times / Number of Tweaks
 
 
-## Function Description
+## Structure and Method Description
+### 1. tabu_list
+1. #### item:
+* **value**: uint64_t to solve this 50 bits Deception Problem
+* **struct tabu_list \*next**: Pointer to next item
+2. #### Method:
+* init_tabu_list(Tabu_list *_list)
 
-### Main Method
-1. #### void initialize(Solution *S, Tabu_list *L) : Initialize the solution and tabu list
-    * Init some variable and Structure. 
-2. #### void tabu_search(int iterations ,int n, int l, Solution *S, Solution *Best, Tabu_list *L)
-    * Tabu search : iterations, n: number of tweaks, l: tabu list length, S: local solution, Best: best solution, L: tabu list
+### 2. queue :
+1. #### item:
+* **_size**: store current of queue 
+* **_limit**: Max limit of queue
+* **Tabu_list \*_head**: ptr point to head of queue
+* **Tabu_list \*_tail**: ptr point to tail of queue
 
-### Helper Method
-1. #### uint64_t generate_random(int div) : 
-    * generate random number divided by div
-2. #### uint64_t B2D (uint64_t value) : 
-    * Convert binary to decimal
-3. #### uint64_t Quality (Solution *t) : 
-    * Calculate the quality of the solution
-4. #### int power(int base, int exponent) : 
-    * Calculate the power of base to exponent
+2. #### Method:
+* **void init_queue(Queue \*_queue, const int _limit, const uint64_t \*value)** : Initialize queue
+* **void pop(Queue \*_queue)** : Pop the oldest item in the tabu list
+* **void push(Queue \*_queue, const uint64_t \*value)** : push value in the newest place of queue
+* **short has_item(Queue \*_queue, uint64_t _value)**: check whether value in queue or not, return 1:True, 0:False
+* **void free_queue(Queue \*_queue)** : Free the tabu list
 
+
+## Main Function Description
+
+### Main
+#### 1. **void tabu_search(int group_size)**
+* tabu_search will compare group_size times to update the best value
+#### 2. **void Tweak(uint64_t \*_value)**
+* Tweak one bit by xor within best value and which value modify one random bit from zero to one
+#### 3. **uint64_t Quality(const uint64_t \*_value)**
+* *f(x) = |B2D(s)-2^(n-2)|, si belongs to {0,1}, n>2*
+* Evaluate value and return decimal
